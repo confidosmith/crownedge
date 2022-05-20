@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% load humanize %}
+
+{% block title %} |{{detail.tag|title}} Rooms {% endblock title %}
+{% block header %} {% include 'header.html' %} {% endblock header %}
+{% block banner %} {% include 'banner.html' %} {% endblock banner %}
+{% block content %}
+<section>
+    <div class="container-fluid tablecart">
+      <h1 class="title">Booking</h1>
+      <div class="col-12">
+        <div class="row">
+          <div class="cart">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">remove</th>
+                  <th scope="col">room</th>
+                  <th scope="col">rate</th>
+                  <th scope="col">checkin</th>
+                  <th scope="col">checkout</th>
+                  <th scope="col">days</th>
+                  <th scope="col">amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% if booking %}
+                    {% for item in booking %}
+                    <tr>
+                        <td class="remov">
+                          <form action="{% url 'delete' %}" method="POST"> 
+                          {% csrf_token %}
+                            <input type="hidden" name="room_id" value="{{item.id}}">
+                            <button type="submit"><i class="fas fa-backspace"></i></button>
+                          </form>
+                        </td>
+                        <td><img src="{{item.room.room_img.url}}" alt=""></td>
+                        <td>₦{{item.price|floatformat:2|intcomma}}</td>
+                        <td>{{item.checkin}}</td>
+                        <td>{{item.checkout}}</td>
+                        <td>{{item.no_days}}</td>
+                        <td>₦{{item.amount|floatformat:2|intcomma}}</td>
+                      </tr>
+                    {% endfor %}
+                {% endif %}
+              </tbody>
+            </table>
+            <table class="cart table">
+                <tbody>
+                <tr>
+                  <td class="row"></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td>Subtotal: ₦{{subtotal|floatformat:2|intcomma}}</td>
+                </tr>
+                <tr>
+                  <td class="row"></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td>Vat: ₦{{vat|floatformat:2|intcomma}}</td>
+                </tr>
+                <tr>
+                  <td class="row"></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td>Total: ₦{{total|floatformat:2|intcomma}}</td>
+                </tr>
+                <td class="row"></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td><a href="{% url 'checkout' %}" class="btn ml-5 mt-3 float-right detail-btn">checkout</a></td> 
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="col-12 col-md-3 col-lg-2"></div> 
+      </div>
+    </div>
+  </section>
+{% endblock content %}
+{% block footer %} {% include 'footer.html' %} {% endblock footer %}
